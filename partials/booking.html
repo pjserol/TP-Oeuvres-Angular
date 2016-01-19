@@ -1,0 +1,56 @@
+<div class="well">
+    <div class="text-center titre">
+        <h2>{{vm.pageTitle}}</h2>
+    </div>
+    <form class="form-horizontal" role="form" name="bookingForm" >
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{'work' | translate}}</label>
+            <div class="col-sm-6 col-md-3">
+                <select class='form-control' name='owners' required
+                        ng-options="work.titre for work in vm.works track by option.id_oeuvre" ng-model="vm.selectedOptionWork">
+                    <option value="{{work.id_oeuvre}}">{{'selectWork' | translate}}</option>
+                </select>
+            </div>
+        </div>
+        
+          <div class="form-group">
+            <label class="col-sm-3 control-label">{{'member' | translate}}</label>
+            <div class="col-sm-6 col-md-3">
+                <select class='form-control' name='owners' required
+                        ng-options="member.id_adherent as member.prenom_adherent + ' ' + member.nom_adherent for member in vm.members track by option.id_adherent" ng-model="vm.selectedOptionMember">
+                    <option value="{{member.id_adherent}}">{{'selectMember' | translate}}</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{'bookingDate' | translate}} </label>
+            <div class="col-sm-6 col-md-2">   
+                <p class="input-group">
+                    <input type="text" class="form-control" is-open="vm.datePickerOpened" datepicker-popup="shortDate" 
+                           ng-model="vm.booking.bookingDate" ng-required="true"  name="bookingDate" close-text="Close" />                 
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openDatePicker()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>   
+                </p>
+            </div>
+        </div>    
+        
+        <div class="form-group">
+            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="vm.validateBooking(bookingForm)"><span class="glyphicon glyphicon-ok"></span> {{'validate' | translate}}</button>
+                &nbsp;
+                <button type="button" class="btn btn-default btn-primary" ng-click="vm.cancel()"><span class="glyphicon glyphicon-remove"></span> {{'cancel' | translate}}</button>
+            </div>           
+        </div>       
+        <div class="form-group" >
+            <div class="col-sm-6 col-sm-offset-3" ng-show="vm.error">
+                <div class="alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    {{ vm.error }}
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

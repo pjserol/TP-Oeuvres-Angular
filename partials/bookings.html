@@ -1,0 +1,26 @@
+<div>
+    <h1>{{'bookingList' | translate}}</h1>
+    <div class="form-group col-md-2">
+        <input class="form-control" ng-model="myFilter" placeholder="{{'filter' | translate}}"/>
+    </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>{{'title' | translate}}</th>
+                <th>{{'price' | translate}}</th>
+                <th>{{'ownerFirstname' | translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="work in vm.works | filter:myFilter">
+                <td>{{work.titre}}</td>
+                <td>{{work.prix}}</td>
+                <td>{{work.proprietaire.nom_proprietaire}}</td>
+                <td>{{work.proprietaire.prenom_proprietaire}}</td>
+                <td><a class="btn btn-primary" ui-sref="updateWork({id: {{work.id_oeuvre}} })">{{'update' | translate}}</a></td>
+                <td><button class="btn btn-primary" ui-sref="bookWork({id: {{work.id_oeuvre}} })">{{'book' | translate}}</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
