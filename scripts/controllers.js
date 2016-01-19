@@ -80,7 +80,6 @@
         var works = [];
             
         worksPromise.success(function(data) {
-            console.log(data);
             if(data.length > 0) {
                 vm.works = data;
             }
@@ -185,7 +184,6 @@
             workR.success(function(data, status) {
                 if(status == 200) {
                     vm.work = data;
-                    console.log(vm.work);
                     vm.selectedOptionOwner = vm.work.proprietaire;
                 }
             }).error(function(error) {
@@ -197,8 +195,6 @@
         // exports
         angular.extend(this, {
             validateWork: validateWork,
-            work: work,
-            selectedOptionOwner: selectedOptionOwner,
             cancel: cancel
         });
     }
@@ -217,50 +213,34 @@
         
         WorksRest.getWorks().success(function(data) {
             vm.works = data;
+            // init
+            vm.selectedOptionWork = data[0];
         }); 
             
         WorksRest.getMembers().success(function(data) {
-            console.log(data);
             vm.members = data;
+            // init
+            vm.selectedOptionMember = data[0];
         });
                 
         var validateBooking = function(form) {
-                            
-                console.log(form);
             if(form.$valid) {
                 var booking = vm.booking;
                 
-                console.log(form);
-                console.log(booking);
-                
-                booking.workId = vm.selectedOptionWork;
-                booking.memberId = vm.selectedOptionMember;
+                booking.workId = vm.selectedOptionWork.id_oeuvre;
+                booking.memberId = vm.selectedOptionMember.id_adherent;
                 booking.date = $filter('date')(vm.booking.bookingDate, 'dd/MM/yyyy');
                 
                 var regexp = /^\d+\,\d{0,2}$/;
-                if(regexp.test(vm.work.prix)) {
-                    work.prix = vm.work.prix.replace(',', '.');
-                }
-                
-                if(id) {
-                    WorksRest.updateWork(id, work).success(function(data, status) {
-                        if(status === 200) {
-                            $state.go('getWorks');
-                        }
-                    }).error(function(error) {
-                        vm.error = error;
-                        console.log(vm.error);
-                    });
-                } else {
-                    WorksRest.addWork(employee).success(function(data, status) {
-                        if(status === 200) {
-                            $state.go('getWorks');
-                        }
-                    }).error(function(error) {
-                        vm.error = error;
-                        console.log(vm.error);
-                    });
-                }
+                WorksRest.bookWork(booking).success(function(data, status) {
+                    if(status === 200) {
+                        $state.go('getWorks');
+                    }
+                }).error(function(error) {
+                    vm.error = error;
+                    console.log(vm.error);
+                });
+
             } else {
                 vm.error = $filter('translate')('errorForm');
             }
@@ -288,8 +268,6 @@
         angular.extend(this, {
             validateBooking: validateBooking,
             openDatePicker: openDatePicker,
-            selectedOptionWork: selectedOptionWork,
-            selectedOptionMember: selectedOptionMember,
             cancel: cancel
         });
     }
@@ -300,9 +278,47 @@
         $state,
         $filter,
         $rootScope
-    ) {
-        
+    ) { 
+        var vm = this;
             
+        var bookingsPromise = WorksRest.getWorkBookings();
+        var bookings = [];
+            
+        bookingsPromise.success(function(data) {
+            if(data.length > 0) {
+                vm.bookings = data;
+                console.log(data);
+            }
+        }).error(function(error) {
+            vm.error = error;
+            console.log(vm.error);
+        });
+            
+        var confirmBooking = function(id, date) {
+            if(id) {
+                date = $filter('date')(date, 'dd-MM-yyyy');    
+                WorksRest.confirmWorkBooking(id, date).then(function(data, status) {
+                    console.log(data);
+                    if(status == 200) {
+                        $state.reload();
+                    }
+                }).catch(function(error) {
+                    vm.error = error;
+                    console.log(vm.error);
+                });
+            }
+        }
+        
+        var isConfirmed = function(statut) {
+            return statut === 'Confirmée';
+        }
+        
+        // exports
+        angular.extend(this, {
+            bookings: bookings,
+            confirmBooking: confirmBooking,
+            isConfirmed: isConfirmed
+        });
     }
     
     MainCtrl.$inject = [

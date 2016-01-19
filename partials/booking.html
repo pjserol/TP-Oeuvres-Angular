@@ -7,8 +7,8 @@
             <label class="col-sm-3 control-label">{{'work' | translate}}</label>
             <div class="col-sm-6 col-md-3">
                 <select class='form-control' name='owners' required
-                        ng-options="work.titre for work in vm.works track by option.id_oeuvre" ng-model="vm.selectedOptionWork">
-                    <option value="{{work.id_oeuvre}}">{{'selectWork' | translate}}</option>
+                        ng-options="work.titre for work in vm.works track by work.id_oeuvre" ng-model="vm.selectedOptionWork">
+                    <option value="">{{'selectWork' | translate}}</option>
                 </select>
             </div>
         </div>
@@ -17,8 +17,8 @@
             <label class="col-sm-3 control-label">{{'member' | translate}}</label>
             <div class="col-sm-6 col-md-3">
                 <select class='form-control' name='owners' required
-                        ng-options="member.id_adherent as member.prenom_adherent + ' ' + member.nom_adherent for member in vm.members track by option.id_adherent" ng-model="vm.selectedOptionMember">
-                    <option value="{{member.id_adherent}}">{{'selectMember' | translate}}</option>
+                        ng-options="member.prenom_adherent + ' ' + member.nom_adherent for member in vm.members track by member.id_adherent" ng-model="vm.selectedOptionMember">
+                    <option value="">{{'selectMember' | translate}}</option>
                 </select>
             </div>
         </div>

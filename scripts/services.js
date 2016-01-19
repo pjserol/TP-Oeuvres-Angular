@@ -31,9 +31,11 @@
             getAddWorkUrl: '/ajouterOeuvre',
             getUpdateWorkUrl: '/modifierOeuvre',
             getBookWorkUrl: '/ajouterReservation',
-            getConfirmWorkBookingUrl: '',
+            getConfirmWorkBookingUrl: '/confirmerReservation/',
             getOwnersUrl: '/getProprietaires',
             getMembersUrl: '/getAdherents',
+            getWorkBookingsUrl:'/getReservations',
+            getWorkBookingUrl:'/getReservations/'
         };
     }
     
@@ -71,14 +73,24 @@
                 return $http.get(url);
             }
             
-            var bookWork = function() {
+            var bookWork = function(booking) {
                 var url = Config.serverUrl + Config.getBookWorkUrl;
                 return $http.post(url);
             }
             
-            var confirmWorkBooking = function() {
-                var url = Config.serverUrl + Config.getConfirmWorkBookingUrl;
+            var confirmWorkBooking = function(id, date) {
+                var url = Config.serverUrl + Config.getConfirmWorkBookingUrl  + id + '-' + date;
                 return $http.get(url);
+            }
+            
+            var getWorkBookings = function(booking) {
+                var url = Config.serverUrl + Config.getWorkBookingsUrl;
+                return $http.get(url);
+            }
+            
+            var getWorkBooking = function() {
+                var url = Config.serverUrl + Config.getWorkBookingUrl;
+                return $http.post(url);
             }
             
             var exports = {
@@ -89,7 +101,9 @@
                 updateWork: updateWork,
                 getOwners: getOwners,
                 bookWork: bookWork,
-                confirmWorkBooking: confirmWorkBooking
+                confirmWorkBooking: confirmWorkBooking,
+                getWorkBookings: getWorkBookings,
+                getWorkBooking: getWorkBooking
             };
 
             return exports;

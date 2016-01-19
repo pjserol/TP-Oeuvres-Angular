@@ -28,6 +28,7 @@
         $urlRouterProvider.otherwise('/home');
         
         $translateProvider.translations('en',{ // en anglais
+            brand: 'ArtWorks',    
             heading: 'Works dashboard',
             home: 'Home',
             menuAdd: 'Add a work',
@@ -45,6 +46,7 @@
             worksList: 'Works list',
             filter: 'Filtered with',
             title: 'Title',
+            owner: 'Owner',
             ownerLastname: 'Owner name',
             ownerFirstname: 'Owner firstname',
             price: 'Price',
@@ -67,10 +69,14 @@
             password: 'Password',
             signInError: 'Wrong login or wrong password !',
             selectMember: 'Select a member',
-            selectWork: 'Select a work'
+            selectWork: 'Select a work',
+            bookingList: 'Bookings list',
+            date: 'Date',
+            confirmlbl: 'Confirm'
         }); 
         
         $translateProvider.translations('fr', { // en français
+            brand: 'Oeuvres',    
             heading: 'Gestion des oeuvres',
             home: 'Accueil',
             menuAdd: 'Ajouter une oeuvre',
@@ -88,6 +94,7 @@
             worksList: 'Liste des oeuvres',
             filter: 'Filtré avec',
             title: 'Titre',
+            owner: 'Propriétaire',
             ownerLastname: 'Nom du propriétaire',
             ownerFirstname: 'Prénom du propriétaire',
             price: 'Prix',
@@ -109,7 +116,10 @@
             password: 'Mot de passe',
             signInError: 'Login ou mot de passe erroné !',
             selectMember: 'Sélectionner un adhérent',
-            selectWork: 'Sélectionner une oeuvre'
+            selectWork: 'Sélectionner une oeuvre',
+            bookingList: 'Liste des réservations',
+            date: 'Date',
+            confirmlbl: 'Confirmer'
         });   
         
         $translateProvider.preferredLanguage('en'); // Langue par défaut
@@ -172,18 +182,7 @@
                 resolve: {
                 }
             });
-        
-         $stateProvider
-            .state('getBookings', {
-                url: '/bookWork',
-                params: {
-                    id: null 
-                },
-                templateUrl: 'partials/bookings.html',
-                controller: 'BookingsCtrl as vm',
-                resolve: {
-                }
-            });
+    
         
          $stateProvider
             .state('bookWork', {
@@ -197,6 +196,17 @@
                 }
             });
         
+         $stateProvider
+            .state('getBookings', {
+                url: '/getBookings',
+                params: {
+                    id: null 
+                },
+                templateUrl: 'partials/bookings.html',
+                controller: 'BookingsCtrl as vm',
+                resolve: {
+                }
+            });
     }])
     .run(['$http', '$location', '$rootScope',
     function($http, $location, $rootScope) {

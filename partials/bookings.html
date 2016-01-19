@@ -8,18 +8,17 @@
         <thead>
             <tr>
                 <th>{{'title' | translate}}</th>
-                <th>{{'price' | translate}}</th>
-                <th>{{'ownerFirstname' | translate}}</th>
+                <th>{{'date' | translate}}</th>
+                <th>{{'member' | translate}}</th>
+                <th>{{'confirmlbl' | translate}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="work in vm.works | filter:myFilter">
-                <td>{{work.titre}}</td>
-                <td>{{work.prix}}</td>
-                <td>{{work.proprietaire.nom_proprietaire}}</td>
-                <td>{{work.proprietaire.prenom_proprietaire}}</td>
-                <td><a class="btn btn-primary" ui-sref="updateWork({id: {{work.id_oeuvre}} })">{{'update' | translate}}</a></td>
-                <td><button class="btn btn-primary" ui-sref="bookWork({id: {{work.id_oeuvre}} })">{{'book' | translate}}</button></td>
+            <tr ng-repeat="booking in vm.bookings | filter:myFilter">
+                <td>{{booking.oeuvre.titre}}</td>
+                <td>{{booking.date_reservation}}</td>
+                <td>{{booking.adherent.nom_adherent + ' ' + booking.adherent.prenom_adherent}}</td>
+                <td><button class="btn btn-primary" ng-disabled="vm.isConfirmed(booking.statut)" ng-click="vm.confirmBooking(booking.oeuvre.id_oeuvre, booking.date_reservation)">{{'confirmlbl' | translate}}</button><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
             </tr>
         </tbody>
     </table>
