@@ -186,7 +186,7 @@
         
          $stateProvider
             .state('bookWork', {
-                url: '/bookWork',
+                url: '/bookWork/:id',
                 params: {
                     id: null 
                 },
@@ -210,6 +210,5 @@
     }])
     .run(['$http', '$location', '$rootScope',
     function($http, $location, $rootScope) {
-    }]);
-        
+    }]);        
 }();

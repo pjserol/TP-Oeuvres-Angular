@@ -32,6 +32,7 @@
             getUpdateWorkUrl: '/modifierOeuvre',
             getBookWorkUrl: '/ajouterReservation',
             getConfirmWorkBookingUrl: '/confirmerReservation/',
+            getDeleteBookingUrl: '/supprimerReservation/',
             getOwnersUrl: '/getProprietaires',
             getMembersUrl: '/getAdherents',
             getWorkBookingsUrl:'/getReservations',
@@ -68,6 +69,11 @@
                 return $http.post(url, work);
             }
             
+            var deleteWork = function(work) {
+                var url = Config.serverUrl + Config.getUpdateWorkUrl;
+                return $http.post(url, work);
+            }
+            
             var getOwners = function() {
                 var url = Config.serverUrl + Config.getOwnersUrl;
                 return $http.get(url);
@@ -75,7 +81,7 @@
             
             var bookWork = function(booking) {
                 var url = Config.serverUrl + Config.getBookWorkUrl;
-                return $http.post(url);
+                return $http.post(url, booking);
             }
             
             var confirmWorkBooking = function(id, date) {
@@ -93,6 +99,11 @@
                 return $http.post(url);
             }
             
+            var deleteWorkBooking = function(id, date) {
+                var url = Config.serverUrl + Config.getDeleteBookingUrl + id + '-' + date;
+                return $http.get(url);
+            }
+            
             var exports = {
                 getWorks: getWorks,
                 getWork: getWork,
@@ -103,7 +114,8 @@
                 bookWork: bookWork,
                 confirmWorkBooking: confirmWorkBooking,
                 getWorkBookings: getWorkBookings,
-                getWorkBooking: getWorkBooking
+                getWorkBooking: getWorkBooking,
+                deleteWorkBooking: deleteWorkBooking
             };
 
             return exports;

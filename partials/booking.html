@@ -6,10 +6,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">{{'work' | translate}}</label>
             <div class="col-sm-6 col-md-3">
-                <select class='form-control' name='owners' required
-                        ng-options="work.titre for work in vm.works track by work.id_oeuvre" ng-model="vm.selectedOptionWork">
-                    <option value="">{{'selectWork' | translate}}</option>
-                </select>
+               <input ng-disabled="true" ng-model="vm.selectedOptionWork.titre"/>
             </div>
         </div>
         
@@ -18,7 +15,7 @@
             <div class="col-sm-6 col-md-3">
                 <select class='form-control' name='owners' required
                         ng-options="member.prenom_adherent + ' ' + member.nom_adherent for member in vm.members track by member.id_adherent" ng-model="vm.selectedOptionMember">
-                    <option value="">{{'selectMember' | translate}}</option>
+                    <option value=""></option>
                 </select>
             </div>
         </div>
@@ -28,7 +25,7 @@
             <div class="col-sm-6 col-md-2">   
                 <p class="input-group">
                     <input type="text" class="form-control" is-open="vm.datePickerOpened" datepicker-popup="shortDate" 
-                           ng-model="vm.booking.bookingDate" ng-required="true"  name="bookingDate" close-text="Close" />                 
+                           ng-model="vm.booking.date_reservation" ng-required="true"  name="bookingDate" close-text="Close" />                 
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openDatePicker()"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>   
