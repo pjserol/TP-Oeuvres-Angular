@@ -199,6 +199,45 @@
         });
     }
 
+    function OwnersCtrl(
+        WorksRest,
+        $state
+    ) {
+        var vm = this;
+
+        var ownersPromise = WorksRest.getOwners();
+        var owners = [];
+
+        ownersPromise.success(function (data) {
+            if (data.length > 0) {
+                vm.owners = data;
+            }
+        }).error(function (error) {
+            vm.error = error;
+            console.log(vm.error);
+        });
+
+        /*var deleteWork = function (id) {
+            if (id) {
+                WorksRest.deleteWork(id).success(function (data, status) {
+                    if (status === 200) {
+                        //$state.go('getEmployees');
+                        $state.reload();
+                    }
+                }).error(function (error) {
+                    vm.error = error;
+                });
+            }
+        }*/
+
+        // exports
+        angular.extend(this, {
+            owners: owners
+                //,
+                //deleteWork: deleteWork
+        });
+    }
+
     function OwnerCtrl(
         WorksRest,
         $stateParams,
@@ -210,22 +249,9 @@
 
         vm.ownerId = $stateParams.id;
 
-        /*WorksRest.getOwners().success(function(data) {
-            vm.owners = data;
-        });*/
-
         var validateOwner = function (id, form) {
             if (form.$valid) {
                 var owner = vm.owner;
-
-                /*work.proprietaire = vm.selectedOptionOwner;*/
-
-                /*var regexp = /^\d+\,\d{0,2}$/;
-                if (regexp.test(vm.work.prix)) {
-                    work.prix = vm.work.prix.replace(',', '.');
-                }*/
-
-                /*work.prix = work.prix.toString();*/
 
                 if (id) {
                     WorksRest.updateOwner(id, owner).success(function (data, status) {
@@ -272,18 +298,22 @@
         }
 
         if (vm.ownerId) {
-            var ownerR = WorksRest.getOwner($stateParams.id);
-
-            ownerR.success(function (data, status) {
-                if (status == 200) {
-                    vm.owner = data;
-                    //vm.selectedOptionOwner = vm.work.proprietaire;
+            console.log("Id");
+            WorksRest.getOwners().success(function (data) {
+                //vm.owners = data;
+                
+                for (var index in data) {
+                    var aOwner = data[index];
+                    if(aOwner.id_proprietaire == vm.ownerId) {
+                        var idOwner = index;
+                        console.log(index);
+                    }
                 }
-            }).error(function (error) {
-                vm.error = $filter('translate')('errorForm');
-                console.log(vm.error);
+
+                vm.owner = data[idOwner];
             });
         }
+
 
         // exports
         angular.extend(this, {
@@ -449,6 +479,11 @@
         '$rootScope'
     ];
 
+    OwnersCtrl.$inject = [
+        'WorksRest',
+        '$state'
+    ];
+
     OwnerCtrl.$inject = [
         'WorksRest',
         '$stateParams',
@@ -478,6 +513,7 @@
         .controller('ConnectionCtrl', ConnectionCtrl)
         .controller('WorksCtrl', WorksCtrl)
         .controller('WorkCtrl', WorkCtrl)
+        .controller('OwnersCtrl', OwnersCtrl)
         .controller('OwnerCtrl', OwnerCtrl)
         .controller('BookingsCtrl', BookingsCtrl)
         .controller('BookingCtrl', BookingCtrl)

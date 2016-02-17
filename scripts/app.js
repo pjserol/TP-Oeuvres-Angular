@@ -34,7 +34,8 @@
                     menuAddWork: 'Add a work',
                     menuAddOwner: 'Add a owner',
                     menuConfirm: 'Confirm a reservation',
-                    menuConsult: 'Consult works',
+                    menuConsultWorks: 'Consult works',
+                    menuConsultOwners: 'Consult owners',
                     menuLogout: 'Log out',
                     list: 'List',
                     add: 'Add',
@@ -45,6 +46,7 @@
                     login: 'Login',
                     logout: 'Logout',
                     worksList: 'Works list',
+                    ownersList: 'Owners list',
                     filter: 'Filtered with',
                     title: 'Title',
                     owner: 'Owner',
@@ -84,7 +86,8 @@
                     menuAddWork: 'Ajouter une oeuvre',
                     menuAddOwner: 'Ajouter un propriétaire',
                     menuConfirm: 'Confirmer une réservation',
-                    menuConsult: 'Consulter les oeuvres',
+                    menuConsultWorks: 'Consulter les oeuvres',
+                    menuConsultOwners: 'Consulter les propriétaires',
                     menuLogout: 'se déconnecter',
                     list: 'Lister',
                     add: 'Ajouter',
@@ -95,6 +98,7 @@
                     login: 'Se connecter',
                     logout: 'Se déconnecter',
                     worksList: 'Liste des oeuvres',
+                    ownersList: 'Liste des propriétaires',
                     filter: 'Filtré avec',
                     title: 'Titre',
                     owner: 'Propriétaire',
@@ -163,6 +167,14 @@
                     });
 
                 $stateProvider
+                    .state('getOwners', {
+                        url: '/getOwners',
+                        templateUrl: 'partials/owners.html',
+                        controller: 'OwnersCtrl as vm',
+                        resolve: {}
+                    });
+
+                $stateProvider
                     .state('updateWork', {
                         url: '/getWork/:id',
                         params: {
@@ -170,6 +182,17 @@
                         },
                         templateUrl: 'partials/work.html',
                         controller: 'WorkCtrl as vm',
+                        resolve: {}
+                    });
+
+                $stateProvider
+                    .state('updateOwner', {
+                        url: '/getOwner/:id',
+                        params: {
+                            id: null
+                        },
+                        templateUrl: 'partials/owner.html',
+                        controller: 'OwnerCtrl as vm',
                         resolve: {}
                     });
 
