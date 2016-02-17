@@ -237,8 +237,9 @@
                         console.log(vm.error);
                     });
                 } else {
+                    owner.id_proprietaire = 0;
                     WorksRest.addOwner(owner).success(function (data, status) {
-                        work.id_proprietaire = 0;
+                        console.log(owner);
                         if (status === 200) {
                             $state.go('getWorks');
                         }

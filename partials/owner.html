@@ -4,15 +4,15 @@
     </div>
     <form class="form-horizontal" role="form" name="ownerForm">
         <div class="form-group">
-            <label class="col-sm-3 control-label">{{'lastname' | translate}}</label>
-            <div class="col-sm-6  col-md-5">
-                <input type="text" name="lastname" ng-model="vm.owner.nom_proprietaire" class="form-control" placeholder="{{'lastname' | translate }}" required autofocus>
+            <label class="col-sm-3 control-label">{{'ownerLastname' | translate}} :</label>
+            <div class="col-sm-6  col-md-4">
+                <input type="text" name="ownerLastname" ng-model="vm.owner.nom_proprietaire" class="form-control" placeholder="{{'ownerLastname' | translate }}" required autofocus>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">{{'firstname' | translate}}</label>
-            <div class="col-sm-6 col-md-2">
-                <input type="currency" name="firstname" ng-model="vm.owner.prenom_proprietaire" class="form-control" placeholder="{{'firstname' | translate }}" required>
+            <label class="col-sm-3 control-label">{{'ownerFirstname' | translate}} :</label>
+            <div class="col-sm-6 col-md-4">
+                <input type="currency" name="firstname" ng-model="vm.owner.prenom_proprietaire" class="form-control" placeholder="{{'ownerFirstname' | translate }}" required>
             </div>
         </div>
         <div class="form-group">

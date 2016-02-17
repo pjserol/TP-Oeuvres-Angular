@@ -101,9 +101,11 @@
                 return $http.post(url);
             }
             
-            var addOwner = function() {
-                var url = Config.serverUrl + Config.getAddWorkUrl;
-                return $http.post(url);
+            var addOwner = function(owner) {
+                console.log('services.js - addOwner');
+                console.log(owner);
+                var url = Config.serverUrl + Config.getAddOwnerUrl;
+                return $http.post(url, owner);
             }
                 
             var deleteWorkBooking = function(id, date) {
