@@ -217,24 +217,9 @@
             console.log(vm.error);
         });
 
-        /*var deleteWork = function (id) {
-            if (id) {
-                WorksRest.deleteWork(id).success(function (data, status) {
-                    if (status === 200) {
-                        //$state.go('getEmployees');
-                        $state.reload();
-                    }
-                }).error(function (error) {
-                    vm.error = error;
-                });
-            }
-        }*/
-
         // exports
         angular.extend(this, {
             owners: owners
-                //,
-                //deleteWork: deleteWork
         });
     }
 
@@ -254,9 +239,9 @@
                 var owner = vm.owner;
 
                 if (id) {
-                    WorksRest.updateOwner(id, owner).success(function (data, status) {
+                    WorksRest.updateOwner(owner).success(function (data, status) {
                         if (status === 200) {
-                            $state.go('getWorks');
+                            $state.go('getOwners');
                         }
                     }).error(function (error) {
                         vm.error = error;
@@ -267,7 +252,7 @@
                     WorksRest.addOwner(owner).success(function (data, status) {
                         console.log(owner);
                         if (status === 200) {
-                            $state.go('getWorks');
+                            $state.go('getOwners');
                         }
                     }).error(function (error) {
                         vm.error = error;
@@ -280,7 +265,7 @@
         }
 
         var cancel = function () {
-            $state.go('getWorks');
+            $state.go('getOwners');
         }
 
         updateTitle();
@@ -290,7 +275,7 @@
 
         function updateTitle() {
             vm.pageTitle = $filter('translate')('aOwner');
-            if (vm.employeeId) {
+            if (vm.ownerId) {
                 vm.pageTitle = $filter('translate')('updating') + ' ' + vm.pageTitle;
             } else {
                 vm.pageTitle = $filter('translate')('adding') + ' ' + vm.pageTitle;
@@ -298,18 +283,14 @@
         }
 
         if (vm.ownerId) {
-            console.log("Id");
             WorksRest.getOwners().success(function (data) {
-                //vm.owners = data;
-                
+
                 for (var index in data) {
                     var aOwner = data[index];
                     if(aOwner.id_proprietaire == vm.ownerId) {
                         var idOwner = index;
-                        console.log(index);
                     }
                 }
-
                 vm.owner = data[idOwner];
             });
         }
