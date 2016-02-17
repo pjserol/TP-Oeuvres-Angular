@@ -25,6 +25,7 @@
     function Config() {
         return {
             serverUrl: 'http://debian-srv.univ-lyon1.fr:8080/OeuvresRest/webresources/webservices',
+                        
             getLogInUrl: '/getConnecter/',
             getWorksUrl: '/getOeuvres',
             getWorkUrl: '/getOeuvre/',
@@ -35,7 +36,8 @@
             getOwnersUrl: '/getProprietaires',
             getMembersUrl: '/getAdherents',
             getWorkBookingsUrl:'/getReservations',
-            getWorkBookingUrl:'/getReservations/'
+            getWorkBookingUrl:'/getReservations/',
+            getAddOwnerUrl:'/ajouterProprietaire'
         };
     }
     
@@ -93,6 +95,11 @@
                 return $http.post(url);
             }
             
+            var addOwner = function() {
+                var url = Config.serverUrl + Config.getAddWorkUrl;
+                return $http.post(url);
+            }
+            
             var exports = {
                 getWorks: getWorks,
                 getWork: getWork,
@@ -103,7 +110,8 @@
                 bookWork: bookWork,
                 confirmWorkBooking: confirmWorkBooking,
                 getWorkBookings: getWorkBookings,
-                getWorkBooking: getWorkBooking
+                getWorkBooking: getWorkBooking,
+                addOwner: addOwner
             };
 
             return exports;
