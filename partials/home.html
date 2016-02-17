@@ -5,6 +5,6 @@
         <li class="list-group-item"><a ui-sref="addOwner">{{'menuAddOwner' | translate}}</a></li>
         <li class="list-group-item"><a ui-sref="getBookings">{{'menuConfirm' | translate}}</a></li>
         <li class="list-group-item"><a ui-sref="getWorks">{{'menuConsult' | translate}}</a></li>
-        <li ng-show="main.isConnected()" class="list-group-item"><a>{{'menuLogout' | translate}}</a></li>
+        <li ng-show="main.isConnected()" class="list-group-item"><a href="" ng-click="main.disconnect()">{{'menuLogout' | translate}}</a></li>
     </ul>
 </section>

@@ -48,13 +48,11 @@
         var signIn = function () {
             Connection.getConnection(credentials.login, credentials.pwd)
                 .then(function (response) {
-                    console.log(response);
                     if (response.statusText === 'OK') {
                         $rootScope.isConnected = true;
                     }
 
                     if ($rootScope.isConnected) {
-                        console.log($rootScope.isConnected);
                         $state.go('home');
                     } else {
                         vm.error = $filter('translate')('signInError');
@@ -127,32 +125,34 @@
             if (form.$valid) {
                 var work = vm.work;
 
-                work.proprietaire = vm.selectedOptionOwner;
-
                 var regexp = /^\d+\,\d{0,2}$/;
                 if (regexp.test(vm.work.prix)) {
                     work.prix = vm.work.prix.replace(',', '.');
                 }
 
-                work.prix = work.prix.toString();
+                work.proprietaire = vm.selectedOptionOwner;
+
+                // to float
+                work.prix = parseFloat(work.prix);
+                delete work.id_proprietaire;
 
                 if (id) {
-                    WorksRest.updateWork(id, work).success(function (data, status) {
+                    console.log(work);
+                    WorksRest.updateWork(work).success(function (data, status) {
                         if (status === 200) {
                             $state.go('getWorks');
                         }
                     }).error(function (error) {
                         vm.error = error;
-                        console.log(vm.error);
                     });
                 } else {
+                    work.id_oeuvre = 0;
                     WorksRest.addWork(work).success(function (data, status) {
                         if (status === 200) {
                             $state.go('getWorks');
                         }
                     }).error(function (error) {
                         vm.error = error;
-                        console.log(vm.error);
                     });
                 }
             } else {
@@ -214,7 +214,7 @@
             vm.owners = data;
         });*/
 
-        var validateWork = function (id, form) {
+        var validateOwner = function (id, form) {
             if (form.$valid) {
                 var owner = vm.owner;
 
@@ -238,6 +238,7 @@
                     });
                 } else {
                     WorksRest.addOwner(owner).success(function (data, status) {
+                        work.id_proprietaire = 0;
                         if (status === 200) {
                             $state.go('getWorks');
                         }
@@ -269,29 +270,26 @@
             }
         }
 
-        /*if (vm.workId) {
-            var workR = WorksRest.getWork($stateParams.id);
+        if (vm.ownerId) {
+            var ownerR = WorksRest.getOwner($stateParams.id);
 
-            workR.success(function (data, status) {
+            ownerR.success(function (data, status) {
                 if (status == 200) {
-                    vm.work = data;
-                    vm.selectedOptionOwner = vm.work.proprietaire;
+                    vm.owner = data;
+                    //vm.selectedOptionOwner = vm.work.proprietaire;
                 }
             }).error(function (error) {
                 vm.error = $filter('translate')('errorForm');
                 console.log(vm.error);
             });
-        }*/
+        }
 
         // exports
         angular.extend(this, {
-            validateWork: validateWork,
+            validateOwner: validateOwner,
             cancel: cancel
         });
     }
-
-
-
 
     function BookingCtrl(
         WorksRest,
@@ -305,10 +303,9 @@
         vm.workId = $stateParams.id;
         vm.datePickerOpened = false;
 
-        WorksRest.getWorks().success(function (data) {
-            vm.works = data;
+        WorksRest.getWork(vm.workId).success(function (data) {
             // init
-            vm.selectedOptionWork = data[0];
+            vm.selectedOptionWork = data;
         });
 
         WorksRest.getMembers().success(function (data) {
@@ -321,9 +318,9 @@
             if (form.$valid) {
                 var booking = vm.booking;
 
-                booking.workId = vm.selectedOptionWork.id_oeuvre;
-                booking.memberId = vm.selectedOptionMember.id_adherent;
-                booking.date = $filter('date')(vm.booking.bookingDate, 'dd/MM/yyyy');
+                booking.id_oeuvre = vm.selectedOptionWork.id_oeuvre;
+                booking.id_adherent = vm.selectedOptionMember.id_adherent;
+                booking.date_reservation = $filter('date')(vm.booking.date_reservation, 'yyyy-MM-dd');
 
                 var regexp = /^\d+\,\d{0,2}$/;
                 WorksRest.bookWork(booking).success(function (data, status) {
@@ -332,9 +329,7 @@
                     }
                 }).error(function (error) {
                     vm.error = error;
-                    console.log(vm.error);
                 });
-
             } else {
                 vm.error = $filter('translate')('errorForm');
             }
@@ -381,24 +376,34 @@
         bookingsPromise.success(function (data) {
             if (data.length > 0) {
                 vm.bookings = data;
-                console.log(data);
             }
         }).error(function (error) {
             vm.error = error;
-            console.log(vm.error);
         });
 
         var confirmBooking = function (id, date) {
             if (id) {
-                date = $filter('date')(date, 'dd-MM-yyyy');
+                date = $filter('date')(date, 'yyyy-MM-dd');
                 WorksRest.confirmWorkBooking(id, date).then(function (data, status) {
-                    console.log(data);
-                    if (status == 200) {
+                    if (data.status == 200) {
                         $state.reload();
                     }
                 }).catch(function (error) {
                     vm.error = error;
-                    console.log(vm.error);
+                });
+            }
+        }
+
+        var deleteBooking = function (id, date) {
+            if (id) {
+                date = $filter('date')(date, 'yyyy-MM-dd');
+                WorksRest.deleteWorkBooking(id, date).then(function (data, status) {
+                    console.log(data);
+                    if (data.status == 200) {
+                        $state.reload();
+                    }
+                }).catch(function (error) {
+                    vm.error = error;
                 });
             }
         }
@@ -411,6 +416,7 @@
         angular.extend(this, {
             bookings: bookings,
             confirmBooking: confirmBooking,
+            deleteBooking: deleteBooking,
             isConfirmed: isConfirmed
         });
     }

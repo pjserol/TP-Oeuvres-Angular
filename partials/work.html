@@ -19,9 +19,9 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">{{'owner' | translate}}</label>
             <div class="col-sm-6 col-md-3">
-                <select class='form-control' name='owners' required
-                        ng-options="owner.prenom_proprietaire + ' ' + owner.nom_proprietaire for owner in vm.owners track by option.id_proprietaire" ng-model="vm.selectedOptionOwner">
-                    <option value="">{{'selectOwner' | translate}}</option>
+                <select class='form-control' name='owners'
+                        ng-options="owner.prenom_proprietaire + ' ' + owner.nom_proprietaire for owner in vm.owners track by owner.id_proprietaire" ng-model="vm.selectedOptionOwner">
+                    <option value="{{owner.id}}">{{'selectOwner' | translate}}</option>
                 </select>
             </div>
         </div>

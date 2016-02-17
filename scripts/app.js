@@ -111,7 +111,7 @@
                     validate: 'Valider',
                     cancel: 'Annuler',
                     aWork: ' une Oeuvre',
-                    aOwner: ' un propriétaire',
+                    aOwner: 'un propriétaire',
                     updating: 'Mettre à jour',
                     adding: 'Ajouter',
                     errorForm: 'Erreurs de saisie !',
@@ -197,7 +197,7 @@
 
                 $stateProvider
                     .state('bookWork', {
-                        url: '/bookWork',
+                        url: '/bookWork/:id',
                         params: {
                             id: null
                         },
@@ -219,5 +219,4 @@
     }])
         .run(['$http', '$location', '$rootScope',
     function ($http, $location, $rootScope) {}]);
-
 }();

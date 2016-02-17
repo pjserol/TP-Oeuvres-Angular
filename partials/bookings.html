@@ -11,14 +11,16 @@
                 <th>{{'date' | translate}}</th>
                 <th>{{'member' | translate}}</th>
                 <th>{{'confirmlbl' | translate}}</th>
+                <th>{{'delete' | translate}}</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="booking in vm.bookings | filter:myFilter">
-                <td>{{booking.oeuvre.titre}}</td>
-                <td>{{booking.date_reservation}}</td>
-                <td>{{booking.adherent.nom_adherent + ' ' + booking.adherent.prenom_adherent}}</td>
-                <td><button class="btn btn-primary" ng-disabled="vm.isConfirmed(booking.statut)" ng-click="vm.confirmBooking(booking.oeuvre.id_oeuvre, booking.date_reservation)">{{'confirmlbl' | translate}}</button><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                <td class="col-md-3">{{booking.oeuvre.titre}}</td>
+                <td class="col-md-3">{{booking.date_reservation}}</td>
+                <td class="col-md-3">{{booking.adherent.nom_adherent + ' ' + booking.adherent.prenom_adherent}}</td>
+                <td class="col-md-3"><button class="btn btn-primary" ng-disabled="vm.isConfirmed(booking.statut)" ng-click="vm.confirmBooking(booking.id_oeuvre, booking.date_reservation)">{{'confirmlbl' | translate}}</button><span class="glyphicon glyphicon-ok pull-right" aria-hidden="true" ng-if="vm.isConfirmed(booking.statut)"></span></td>
+                <td class="col-md-3"><button class="btn btn-danger" ng-click="vm.deleteBooking(booking.id_oeuvre, booking.date_reservation)">{{'delete' | translate}}</button></td>
             </tr>
         </tbody>
     </table>
