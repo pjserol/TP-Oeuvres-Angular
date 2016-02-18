@@ -2,13 +2,13 @@
     /* global angular */
     'use strict'; // jshint ignore:line
     
-    function currency($rootScope) {            
+    function currency($rootScope, $translate) {            
         return function(number) {
             var separator = ' ';
             var decimalPoint = ',';
             var money = ' €';
             
-            if($rootScope.language === 'en') {
+            if($translate.use() === 'en') {
                 separator = ',';
                 decimalPoint = '.';
                 money = ' $';
@@ -19,7 +19,7 @@
         }
     }
     
-    currency.$inject = ['$rootScope'];
+    currency.$inject = ['$rootScope', '$translate'];
     
     angular.module('filters', [])
     .filter('currency', currency)

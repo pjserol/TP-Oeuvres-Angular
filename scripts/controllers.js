@@ -18,9 +18,6 @@
             $translate.use(lang);
         }
 
-        localization.setLang('en');
-        $translate.use('en');
-
         // exports
         angular.extend(this, {
             disconnect: disconnect,
@@ -83,7 +80,6 @@
             }
         }).error(function (error) {
             vm.error = error;
-            console.log(vm.error);
         });
 
         var deleteWork = function (id) {
@@ -111,16 +107,18 @@
         $stateParams,
         $state,
         $filter,
-        $rootScope
+        $rootScope,
+        owners
     ) {
         var vm = this;
 
         vm.workId = $stateParams.id;
-
-        WorksRest.getOwners().success(function (data) {
-            vm.owners = data;
-        });
-
+        
+        // set owners (injected from app)
+        if(typeof owners !== 'undefined') {
+            vm.owners = owners.data;
+        }
+            
         var validateWork = function (id, form) {
             if (form.$valid) {
                 var work = vm.work;
@@ -137,7 +135,6 @@
                 delete work.id_proprietaire;
 
                 if (id) {
-                    console.log(work);
                     WorksRest.updateWork(work).success(function (data, status) {
                         if (status === 200) {
                             $state.go('getWorks');
@@ -161,7 +158,7 @@
         }
 
         var cancel = function () {
-            $state.go('getWorks');
+            $state.go('home');
         }
 
         updateTitle();
@@ -171,7 +168,7 @@
 
         function updateTitle() {
             vm.pageTitle = $filter('translate')('aWork');
-            if (vm.employeeId) {
+            if (vm.workId) {
                 vm.pageTitle = $filter('translate')('updating') + ' ' + vm.pageTitle;
             } else {
                 vm.pageTitle = $filter('translate')('adding') + ' ' + vm.pageTitle;
@@ -457,7 +454,8 @@
         '$stateParams',
         '$state',
         '$filter',
-        '$rootScope'
+        '$rootScope',
+        'owners'
     ];
 
     OwnersCtrl.$inject = [
@@ -489,7 +487,7 @@
         '$rootScope'
     ];
 
-    angular.module('controllers', ['services'])
+    angular.module('controllers', ['services', 'filters'])
         .controller('MainCtrl', MainCtrl)
         .controller('ConnectionCtrl', ConnectionCtrl)
         .controller('WorksCtrl', WorksCtrl)

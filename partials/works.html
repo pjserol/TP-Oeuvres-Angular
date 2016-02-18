@@ -18,7 +18,7 @@
         <tbody>
             <tr ng-repeat="work in vm.works | filter:myFilter">
                 <td>{{work.titre}}</td>
-                <td>{{work.prix}}</td>
+                <td>{{work.prix | currency | translate}}</td>
                 <td>{{work.proprietaire.nom_proprietaire}}</td>
                 <td>{{work.proprietaire.prenom_proprietaire}}</td>
                 <td><a class="btn btn-primary" ui-sref="updateWork({id: {{work.id_oeuvre}} })">{{'update' | translate}}</a></td>

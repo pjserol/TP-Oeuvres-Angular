@@ -37,13 +37,6 @@
                     <div class="collapse navbar-collapse" id="navbar-collapse-target">
                         <ul class="nav navbar-nav">
                             <li class="active"><a ui-sref="home">{{'home' | translate}}</a></li>
-                            <li class="dropdown" ng-show="main.isConnected()">
-                                <a class="dropdown-toggle" data-toggle="dropdown">{{'title' | translate}}<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#/getEmployees">{{'list' | translate}}</a></li>
-                                    <li><a href="#/addEmployee">{{'add' | translate}}</a></li>
-                                </ul>
-                            </li>                           
                         </ul>  
                         <ul class="nav navbar-nav navbar-right">                             
                             <li class="dropdown">
@@ -62,6 +55,7 @@
                 </div><!--/.container-fluid -->
             </nav>
             <section class="home">
+                <div class="alert alert-warning log-out" ng-if="!main.isConnected()">Vous n'êtes pas connecté</div>
                 <div ui-view>
                 </div>
             </section>

@@ -25,7 +25,6 @@
     function Config() {
         return {
             serverUrl: 'http://debian-srv.univ-lyon1.fr:8080/OeuvresRest/webresources/webservices',
-
             getLogInUrl: '/getConnecter/',
             getWorksUrl: '/getOeuvres',
             getWorkUrl: '/getOeuvre/',
@@ -108,8 +107,6 @@
         }
 
         var addOwner = function (owner) {
-            console.log('services.js - addOwner');
-            console.log(owner);
             var url = Config.serverUrl + Config.getAddOwnerUrl;
             return $http.post(url, owner);
         }

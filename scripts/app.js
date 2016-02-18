@@ -88,7 +88,6 @@
                     menuConfirm: 'Confirmer une réservation',
                     menuConsultWorks: 'Consulter les oeuvres',
                     menuConsultOwners: 'Consulter les propriétaires',
-                    menuLogout: 'se déconnecter',
                     list: 'Lister',
                     add: 'Ajouter',
                     language: 'Langue',
@@ -138,32 +137,21 @@
                     .state('home', {
                         url: '/home',
                         templateUrl: 'partials/home.html',
-                        controller: 'MainCtrl as vm',
-                        resolve: {
-                            //                messages: function (InboxService) {
-                            //                return InboxService.getMessages();
-                            //                }
-                        }
+                        controller: 'MainCtrl as vm'
                     });
 
                 $stateProvider
                     .state('connect', {
                         url: '/connect',
                         templateUrl: 'partials/connect.html',
-                        controller: 'ConnectionCtrl as vm',
-                        resolve: {
-                            //                messages: function (InboxService) {
-                            //                return InboxService.getMessages();
-                            //                }
-                        }
+                        controller: 'ConnectionCtrl as vm'
                     });
 
                 $stateProvider
                     .state('getWorks', {
                         url: '/getWorks',
                         templateUrl: 'partials/works.html',
-                        controller: 'WorksCtrl as vm',
-                        resolve: {}
+                        controller: 'WorksCtrl as vm'
                     });
 
                 $stateProvider
@@ -182,7 +170,11 @@
                         },
                         templateUrl: 'partials/work.html',
                         controller: 'WorkCtrl as vm',
-                        resolve: {}
+                        resolve: {
+                            owners: function(WorksRest) {
+                                return WorksRest.getOwners();
+                            }
+                        }
                     });
 
                 $stateProvider
@@ -204,7 +196,11 @@
                         },
                         templateUrl: 'partials/work.html',
                         controller: 'WorkCtrl as vm',
-                        resolve: {}
+                        resolve: {
+                            owners: function(WorksRest) {
+                                return WorksRest.getOwners();
+                            }
+                        }
                     });
 
                 $stateProvider
@@ -240,6 +236,18 @@
                         resolve: {}
                     });
     }])
-        .run(['$http', '$location', '$rootScope',
-    function ($http, $location, $rootScope) {}]);
+        .run(['$http', '$location', '$rootScope', '$state',
+    function ($http, $location, $rootScope, $state) {
+        // defaults
+        $rootScope.openedStates = ['connect', 'home'];
+        $rootScope.isConnected = false;
+        $rootScope.language = 'en';
+        
+        $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+            if($rootScope.openedStates.indexOf(toState.name) === -1 && $rootScope.isConnected === false) {
+                event.preventDefault();
+                $state.go('connect');
+            }
+        });
+    }]);
 }();
