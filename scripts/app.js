@@ -236,12 +236,12 @@
                         resolve: {}
                     });
     }])
-        .run(['$http', '$location', '$rootScope', '$state',
-    function ($http, $location, $rootScope, $state) {
+        .run(['$http', '$location', '$rootScope', '$state', 'localization',
+    function ($http, $location, $rootScope, $state, localization) {
         // defaults
         $rootScope.openedStates = ['connect', 'home'];
         $rootScope.isConnected = false;
-        $rootScope.language = 'en';
+        localization.setLang('en');
         
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
             if($rootScope.openedStates.indexOf(toState.name) === -1 && $rootScope.isConnected === false) {

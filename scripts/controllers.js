@@ -305,13 +305,14 @@
         $stateParams,
         $state,
         $filter,
-        $rootScope
+        $rootScope,
+        $locale
     ) {
         var vm = this;
-
+        console.log($locale);
         vm.workId = $stateParams.id;
         vm.datePickerOpened = false;
-
+        
         WorksRest.getWork(vm.workId).success(function (data) {
             // init
             vm.selectedOptionWork = data;
@@ -375,13 +376,14 @@
         $stateParams,
         $state,
         $filter,
-        $rootScope
+        $rootScope,
+        $locale
     ) {
         var vm = this;
 
         var bookingsPromise = WorksRest.getWorkBookings();
         var bookings = [];
-
+            
         bookingsPromise.success(function (data) {
             if (data.length > 0) {
                 vm.bookings = data;
@@ -420,13 +422,18 @@
         var isConfirmed = function (statut) {
             return statut === 'Confirmée';
         }
+        
+        var formatDateToLocal = function(date) {
+            return $filter('date')(date, $locale.DATETIME_FORMATS.shortDate);
+        }
 
         // exports
         angular.extend(this, {
             bookings: bookings,
             confirmBooking: confirmBooking,
             deleteBooking: deleteBooking,
-            isConfirmed: isConfirmed
+            isConfirmed: isConfirmed,
+            formatDateToLocal: formatDateToLocal
         });
     }
 
@@ -484,7 +491,8 @@
         '$stateParams',
         '$state',
         '$filter',
-        '$rootScope'
+        '$rootScope',
+        '$locale'
     ];
 
     angular.module('controllers', ['services', 'filters'])
